@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+    <meta charset="UTF-8">
+    <title>Tab-Panel</title>
+    <style>
+    .wrapper {
+        width: 50%;
+        margin: auto;
+    }
+
+    .tab-panel {
+        display: inline-flex;
+        position: relative;
+    }
+
+    .tab-panel a {
+        display: inline-flex;
+        padding: 15px 25px;
+        border: 1px solid #000;
+        border-radius: 5px 5px 0px 0px;
+        text-decoration: none;
+        color: #000;
+        background-color: lightblue;
+    }
+
+    .tab-content {
+        border: 1px solid #000;
+        position: relative;
+        top: -1px;
+        left: 0;
+        border-radius: 0px 5px 5px 5px;
+        padding: 15px;
+        z-index: -1;
+        background-color: skyblue;
+    }
+
+    a.active {
+        border-bottom: 0;
+        background-color: skyblue;
+        pointer-events: none;
+    }
+
+    .tab-content div {
+        display: none;
+    }
+
+    .tab-content div:first-of-type {
+        display: block;
+    }
+
+    .modal {
+    	display: none;
+        width: 35%;
+        height: 250px;
+        position: absolute;
+        top: 5%;
+        left: 33%;
+        background-color: skyblue;
+        color: black;
+        border-radius: 5px;
+        text-align: center;
+        margin: auto;
+        border: 1px solid #000;
+    }
+
+    .modal input {
+        display: block;
+        margin: 5px auto;
+    }
+
+    .modal span {
+        position: absolute;
+        top: 5%;
+        right: 5%;
+        cursor: pointer;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="tab-panel">
+            <a href="#" data-tab="main" class="active">Main</a>
+            <a href="#" data-tab="subs">Subwoofers</a>
+            <a href="#" data-tab="front">Speakers</a>
+            <a href="#" data-tab="add" class="add">+Add Tab</a>
+        </div>
+        <div class="tab-content">
+            <div data-cont="main">Car music is a very interesting theme. Most of the people usually don't understand us. But when they hear our music systems, frequently asked questions are: "How much does is cost?" and "Can you tune my car's system?"</div>
+            <div data-cont="subs">Subwoofers take one of the main roles in car audio. Without sub, music becomes thin and dry. This kind of loudspeakers are installed in the trunk of car, and usually "eats" the bigger space of trunk.</div>
+            <div data-cont="front">Full range speakers play the second part of car audio. This type of speakers should play practically all range of sounds, aprx. from 100 Hz to 20000 Hz. If the music must play right, there should be a mid-bass, mid-range and a tweeter installed at least.</div>
+            <div data-cont="add" class="addCont">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur, earum?</div>
+        </div>
+    </div>
+    <script>
+    $('.add').click(function() {
+        $('.wrapper').append('<div class="modal"></div>');
+        $('.modal').append('<h1>Add Tab</h1> <span>x</span> <input type="text" id="tabname" placeholder="Tab name"> <input type="text" id="tabcont" placeholder="Tab content"> <button type="button" id="add-tab">Add a new tab');
+        $('.modal').fadeIn();
+    });
+
+    $('body').on('click', '#add-tab', function() {
+        var newTab = $('#tabname').val();
+        var newContent = $('#tabcont').val(); 
+
+        $('<a href="#" data-tab="' + newTab + '">' + newTab + '</a>').insertBefore('.add');
+        $('<div data-cont="' + newTab + '">' + newContent + '</div>').insertBefore('.addCont')
+
+        $('.modal').remove();
+    });
+
+    $('body').on('click', '.modal > span', function() {
+        $('.modal').remove();
+        
+    });
+
+    $('.tab-panel').on('click', 'a', function(e) {
+        e.preventDefault();
+        var tab = $(this).data('tab');
+
+        $('[data-cont]').fadeOut();
+
+        setTimeout(function() {
+            $('[data-cont=' + tab + ']').fadeIn();
+        }, 400);
+
+        $('a').removeClass('active');
+        $(this).addClass('active');
+    });
+    </script>
+</body>
+
+</html>
